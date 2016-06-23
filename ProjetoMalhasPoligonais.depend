@@ -6,6 +6,8 @@
 	<stdlib.h>
 	<GL/glut.h>
 
+1405541361 >
+
 1405537761 c:\users\aretha\dropbox\utfpr\disciplinas\2014\bcc35f - computação grática\códigos\projetomalhaspoligonais\bibutil.h
 	<windows.h>
 	<stdio.h>
@@ -20,12 +22,16 @@
 	<vector>
 	"bibutil.h"
 
+1405911410 "
+
 1434398380 source:d:\dropbox\utfpr\disciplinas\2015\1 semestre\bcc35f - computação grática\códigos\projetomalhaspoligonais\05-03-malhaobj.cpp
 	<windows.h>
 	"bibutil.h"
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
+
+1435610317 ut.h>
 
 1405537761 d:\dropbox\utfpr\disciplinas\2015\1 semestre\bcc35f - computação grática\códigos\projetomalhaspoligonais\bibutil.h
 	<windows.h>
@@ -61,4 +67,22 @@
 	<string.h>
 	<vector>
 	"bibutil.h"
+
+1466702301 source:/home/mairieli/Workspace/cena3D-cg/bibutil.cpp
+	<math.h>
+	<string.h>
+	<vector>
+	"bibutil.h"
+
+1466702351 /home/mairieli/Workspace/cena3D-cg/bibutil.h
+	<stdio.h>
+	<stdlib.h>
+	<GL/glut.h>
+	<jpeglib.h>
+
+1466706623 source:/home/mairieli/Workspace/cena3D-cg/05-03-MalhaOBJ.cpp
+	"bibutil.h"
+	<stdio.h>
+	<stdlib.h>
+	<GL/freeglut.h>
 

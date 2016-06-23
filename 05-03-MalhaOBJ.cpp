@@ -50,7 +50,7 @@ void Desenha(void)
 	glMatrixMode(GL_MODELVIEW);
 
 	// Altera a cor do desenho para rosa
-	glColor3f(1.0f, 0.0f, 1.0f);
+	glColor3f(0.50f, 0.50f, 0.50f);
 
 	// Desenha o objeto 3D lido do arquivo com a cor corrente
 	glPushMatrix();
@@ -228,7 +228,7 @@ void Inicializa (void)
 	//gets(nomeArquivo);
 
 	// Carrega o objeto 3D
-	objeto = CarregaObjeto("monkey.obj",true);
+	objeto = CarregaObjeto("cabeca.obj",true);
     printf("Objeto carregado!");
 
 	// E calcula o vetor normal em cada face
