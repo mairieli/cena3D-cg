@@ -12,6 +12,7 @@ int x_ini,y_ini,bot;
 
 // Apontador para objeto
 OBJ *objeto;
+OBJ* corpo;
 
 // Função responsável pela especificação dos parâmetros de iluminação
 void DefineIluminacao (void)
@@ -52,12 +53,21 @@ void Desenha(void)
 	// Altera a cor do desenho para rosa
 	glColor3f(0.50f, 0.50f, 0.50f);
 
-	// Desenha o objeto 3D lido do arquivo com a cor corrente
+	//Desenha cabeça
 	glPushMatrix();
     glRotatef(rotX,1,0,0);
 	glRotatef(rotY,0,1,0);
-
+	glScalef(0.2f, 0.2f, 0.2f);
+	glTranslatef(0, 13, 0);
 	DesenhaObjeto(objeto);
+    glPopMatrix();
+
+    //Desenha corpo
+    glPushMatrix();
+    glRotatef(rotX,1,0,0);
+	glRotatef(rotY,0,1,0);
+	glScalef(1.3f, 1.3f, 1.3f);
+	DesenhaObjeto(corpo);
     glPopMatrix();
 
     //teto
@@ -155,6 +165,7 @@ void Teclas (unsigned char tecla, int x, int y)
 	{
 		// Libera memória e finaliza programa
 		LiberaObjeto(objeto);
+		LiberaObjeto(corpo);
 		exit(0);
 	}
 	if(tecla=='m')
@@ -281,6 +292,18 @@ void Inicializa (void)
 		objeto->normais_por_vertice = false;
 	}
 	CalculaNormaisPorFace(objeto);
+
+	corpo = CarregaObjeto("corpo.obj",true);
+    printf("Objeto carregado!");
+
+	// E calcula o vetor normal em cada face
+	if(corpo->normais)
+	{
+		// Se já existirem normais no arquivo, apaga elas
+		free(corpo->normais);
+		corpo->normais_por_vertice = false;
+	}
+	CalculaNormaisPorFace(corpo);
 }
 
 // Programa Principal
