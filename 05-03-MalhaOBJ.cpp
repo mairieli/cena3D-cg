@@ -60,6 +60,48 @@ void Desenha(void)
 	DesenhaObjeto(objeto);
     glPopMatrix();
 
+    //teto
+    glPushMatrix();
+    glColor3f(0, 0, 1);
+    glTranslatef(0, 10, 0);
+    glScalef(20, 0.1f, 20);
+    glutSolidCube(1.0f);
+    glPopMatrix();
+
+    //chão
+    glPushMatrix();
+    glColor3f(0, 0, 0);
+    glTranslatef(0, -10, 0);
+    glScalef(20, 0.1f, 20);
+    glutSolidCube(1.0f);
+    glPopMatrix();
+
+    //esquerda
+    glPushMatrix();
+    glColor3f(1, 0, 1);
+    glRotatef(90, 0, 0, 1);
+    glTranslatef(0, -10, 0);
+    glScalef(20, 0.1f, 20);
+    glutSolidCube(1.0f);
+    glPopMatrix();
+
+    //direita
+    glPushMatrix();
+    glColor3f(0, 1, 1);
+    glRotatef(90, 0, 0, 1);
+    glTranslatef(0, 10, 0);
+    glScalef(20, 0.1f, 20);
+    glutSolidCube(1.0f);
+    glPopMatrix();
+
+    //tras
+    glPushMatrix();
+    glColor3f(0, 0, 0);
+    glRotatef(90, 1, 0, 0);
+    glTranslatef(0, -10, 0);
+    glScalef(20, 0.1f, 20);
+    glutSolidCube(1.0f);
+    glPopMatrix();
 	// Executa os comandos OpenGL
 	glutSwapBuffers();
 }
@@ -87,7 +129,7 @@ void EspecificaParametrosVisualizacao(void)
 
 	// Chama as funções que especificam os parâmetros da câmera e os parâmetros de iluminação
 	PosicionaObservador();
-	DefineIluminacao();
+	//DefineIluminacao();
 
 }
 
@@ -221,7 +263,7 @@ void Inicializa (void)
 	// Inicializa as variáveis usadas para alterar a posição do
 	// observador virtual
 	obsX = obsY = 0;
-	obsZ = 100;
+	obsZ = 10;
 
 	// Lê o nome do arquivo e chama a rotina de leitura
 	//printf("Digite o nome do arquivo que contem o modelo 3D: ");
@@ -252,7 +294,7 @@ int main(int argc, char *argv[])
 	glutInitWindowPosition(5,5);
 
 	// Especifica o tamanho inicial em pixels da janela GLUT
-	glutInitWindowSize(450,450);
+	glutInitWindowSize(900,600);
 
 	// Cria a janela passando como argumento o título da mesma
 	glutCreateWindow("Desenho de um objeto 3D com cálculo do vetor normal");
