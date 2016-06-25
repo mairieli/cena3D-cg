@@ -13,6 +13,7 @@ int x_ini,y_ini,bot;
 // Apontador para objeto
 OBJ *objeto;
 OBJ* corpo;
+OBJ* banco;
 
 // Função responsável pela especificação dos parâmetros de iluminação
 void DefineIluminacao (void)
@@ -68,6 +69,16 @@ void Desenha(void)
 	glRotatef(rotY,0,1,0);
 	glScalef(1.3f, 1.3f, 1.3f);
 	DesenhaObjeto(corpo);
+    glPopMatrix();
+
+    //Desenha banco
+    glPushMatrix();
+    glColor3f(0.91f, 0.51f, 0.23f);
+    glRotatef(rotX,1,0,0);
+	glRotatef(rotY,0,1,0);
+	glScalef(0.8f, 0.8f,0.8f);
+	glTranslatef(-0.2f, -7.8f, -6.5f);
+	DesenhaObjeto(banco);
     glPopMatrix();
 
     //teto
@@ -166,6 +177,7 @@ void Teclas (unsigned char tecla, int x, int y)
 		// Libera memória e finaliza programa
 		LiberaObjeto(objeto);
 		LiberaObjeto(corpo);
+		LiberaObjeto(banco);
 		exit(0);
 	}
 	if(tecla=='m')
@@ -304,6 +316,18 @@ void Inicializa (void)
 		corpo->normais_por_vertice = false;
 	}
 	CalculaNormaisPorFace(corpo);
+
+	banco = CarregaObjeto("stool.obj",true);
+    printf("Objeto carregado!");
+
+	// E calcula o vetor normal em cada face
+	if(banco->normais)
+	{
+		// Se já existirem normais no arquivo, apaga elas
+		free(banco->normais);
+		banco->normais_por_vertice = false;
+	}
+	CalculaNormaisPorFace(banco);
 }
 
 // Programa Principal
@@ -320,7 +344,7 @@ int main(int argc, char *argv[])
 	glutInitWindowSize(900,600);
 
 	// Cria a janela passando como argumento o título da mesma
-	glutCreateWindow("Desenho de um objeto 3D com cálculo do vetor normal");
+	glutCreateWindow("Quarto do Terror");
 
 	// Registra a função callback de redesenho da janela de visualização
 	glutDisplayFunc(Desenha);
