@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1466963028 source:/home/mairieli/Workspace/cena3D-cg/bibutil.cpp
+	<math.h>
+	<string.h>
+	<vector>
+	"bibutil.h"
+
+1466963028 /home/mairieli/Workspace/cena3D-cg/bibutil.h
+	<stdio.h>
+	<stdlib.h>
+	<GL/glut.h>
+	<jpeglib.h>
+
