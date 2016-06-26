@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <GL/freeglut.h>
 
+#define SENS_ROT	5.0
+#define SENS_OBS	15.0
+#define SENS_TRANSL	20.0
 //#define DEBUG 1
 // Variáveis para controles de navegação
 GLfloat angle, fAspect;
@@ -76,7 +79,7 @@ void Desenha(void)
     //Desenha banco
     glPushMatrix();
     glColor3f(0.91f, 0.51f, 0.23f);
-    glRotatef(rotX,1,0,0);
+    glRotatef(0,1,0,0);
 	glRotatef(0,0,1,0);
 	glScalef(0.8f, 0.8f,0.8f);
 	glTranslatef(-0.2f, -7.8f, -6.5f);
@@ -226,9 +229,6 @@ void GerenciaMouse(int button, int state, int x, int y)
 }
 
 // Função callback para eventos de movimento do mouse
-#define SENS_ROT	5.0
-#define SENS_OBS	15.0
-#define SENS_TRANSL	20.0
 void GerenciaMovim(int x, int y)
 {
 	// Botão esquerdo
@@ -245,19 +245,11 @@ void GerenciaMovim(int x, int y)
 	else if(bot==GLUT_RIGHT_BUTTON){
 		// Calcula diferença
 		int deltaz = y_ini - y;
+		if((obsZ_ini + deltaz/SENS_OBS) <= 20 && (obsZ_ini + deltaz/SENS_OBS) >= 0)
 		// E modifica distância do observador
 		obsZ = obsZ_ini + deltaz/SENS_OBS;
 	}
 	// Botão do meio
-	else if(bot==GLUT_MIDDLE_BUTTON)
-	{
-		// Calcula diferenças
-		//int deltax = x_ini - x;
-		int deltay = y_ini - y;
-		// E modifica posições
-		//obsX = obsX_ini + deltax/SENS_TRANSL;
-		obsY = obsY_ini - deltay/SENS_TRANSL;
-	}
 	PosicionaObservador();
 	glutPostRedisplay();
 }
@@ -265,7 +257,6 @@ void GerenciaMovim(int x, int y)
 // Função responsável por inicializar parâmetros e variáveis
 void Inicializa (void)
 {
-	char nomeArquivo[30];
 
 	// Define a cor de fundo da janela de visualização como branca
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -289,11 +280,7 @@ void Inicializa (void)
 	// Inicializa as variáveis usadas para alterar a posição do
 	// observador virtual
 	obsX = obsY = 0;
-	obsZ = 10;
-
-	// Lê o nome do arquivo e chama a rotina de leitura
-	//printf("Digite o nome do arquivo que contem o modelo 3D: ");
-	//gets(nomeArquivo);
+	obsZ = 20;
 
 	// Carrega o objeto 3D
 	cabeca = CarregaObjeto("cabeca.obj",true);
@@ -344,7 +331,7 @@ int main(int argc, char *argv[])
 	glutInitWindowPosition(5,5);
 
 	// Especifica o tamanho inicial em pixels da janela GLUT
-	glutInitWindowSize(900,600);
+	glutInitWindowSize(1200,600);
 
 	// Cria a janela passando como argumento o título da mesma
 	glutCreateWindow("Quarto do Terror");
@@ -356,10 +343,10 @@ int main(int argc, char *argv[])
 	glutReshapeFunc(AlteraTamanhoJanela);
 
 	// Registra a função callback para tratamento das teclas normais
-	glutKeyboardFunc (Teclas);
+	glutKeyboardFunc(Teclas);
 
 	// Registra a função callback para tratamento das teclas especiais
-	glutSpecialFunc (TeclasEspeciais);
+	glutSpecialFunc(TeclasEspeciais);
 
 	// Registra a função callback para eventos de botões do mouse
 	glutMouseFunc(GerenciaMouse);
