@@ -11,7 +11,7 @@ GLfloat obsX, obsY, obsZ, obsX_ini, obsY_ini, obsZ_ini;
 int x_ini,y_ini,bot;
 
 // Apontador para objeto
-OBJ *objeto;
+OBJ *cabeca;
 OBJ* corpo;
 OBJ* banco;
 
@@ -60,7 +60,7 @@ void Desenha(void)
 	glRotatef(rotY,0,1,0);
 	glScalef(0.2f, 0.2f, 0.2f);
 	glTranslatef(0, 13, 0);
-	DesenhaObjeto(objeto);
+	DesenhaObjeto(cabeca);
     glPopMatrix();
 
     //Desenha corpo
@@ -175,7 +175,7 @@ void Teclas (unsigned char tecla, int x, int y)
 	if(tecla==27) // ESC ?
 	{
 		// Libera memória e finaliza programa
-		LiberaObjeto(objeto);
+		LiberaObjeto(cabeca);
 		LiberaObjeto(corpo);
 		LiberaObjeto(banco);
 		exit(0);
@@ -293,17 +293,17 @@ void Inicializa (void)
 	//gets(nomeArquivo);
 
 	// Carrega o objeto 3D
-	objeto = CarregaObjeto("cabeca.obj",true);
+	cabeca = CarregaObjeto("cabeca.obj",true);
     printf("Objeto carregado!");
 
 	// E calcula o vetor normal em cada face
-	if(objeto->normais)
+	if(cabeca->normais)
 	{
 		// Se já existirem normais no arquivo, apaga elas
-		free(objeto->normais);
-		objeto->normais_por_vertice = false;
+		free(cabeca->normais);
+		cabeca->normais_por_vertice = false;
 	}
-	CalculaNormaisPorFace(objeto);
+	CalculaNormaisPorFace(cabeca);
 
 	corpo = CarregaObjeto("corpo.obj",true);
     printf("Objeto carregado!");
