@@ -302,7 +302,7 @@ void inicializa(void) {
 	obsZ = 20;
 
 	// Carrega o objeto 3D
-	cabeca = CarregaObjeto("cabeca.obj",true);
+	cabeca = CarregaObjeto("objetos/cabeca.obj",true);
     printf("Objeto carregado!");
 
 	// E calcula o vetor normal em cada face
@@ -314,7 +314,7 @@ void inicializa(void) {
 	}
 	CalculaNormaisPorFace(cabeca);
 
-	corpo = CarregaObjeto("corpo.obj",true);
+	corpo = CarregaObjeto("objetos/corpo.obj",true);
     printf("Objeto carregado!");
 
 	// E calcula o vetor normal em cada face
@@ -326,7 +326,7 @@ void inicializa(void) {
 	}
 	CalculaNormaisPorFace(corpo);
 
-	banco = CarregaObjeto("stool.obj",true);
+	banco = CarregaObjeto("objetos/stool.obj",true);
     printf("Objeto carregado!");
 
 	// E calcula o vetor normal em cada face
