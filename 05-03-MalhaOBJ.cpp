@@ -6,14 +6,14 @@
 #define SENS_ROT	5.0
 #define SENS_OBS	15.0
 #define SENS_TRANSL	20.0
-//#define DEBUG 1
+
 // Variáveis para controles de navegação
 GLfloat angle, fAspect;
 GLfloat rotX, rotY, rotX_ini, rotY_ini;
 GLfloat obsX, obsY, obsZ, obsX_ini, obsY_ini, obsZ_ini;
 int x_ini,y_ini,bot;
 
-// Apontador para objeto
+// Apontador para objetos
 OBJ *cabeca;
 OBJ* corpo;
 OBJ* banco;
@@ -21,29 +21,19 @@ OBJ* banco;
 // Função responsável pela especificação dos parâmetros de iluminação
 void DefineIluminacao (void)
 {
-	GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0};
+	GLfloat luzAmbiente[4]={0.1,0.1,0.1,1.0};
 	GLfloat luzDifusa[4]={1.0,1.0,1.0,1.0};	   	// "cor"
 	GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};	// "brilho"
-	GLfloat posicaoLuz[4]={0.0, 10.0, 100.0, 1.0};
-
-	// Capacidade de brilho do material
-	GLfloat especularidade[4]={1.0,1.0,1.0,1.0};
-	GLint especMaterial = 60;
-
-
-	// Define a refletância do material
-	glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
-	// Define a concentração do brilho
-	glMateriali(GL_FRONT,GL_SHININESS,especMaterial);
+	GLfloat posicaoLuz[4]={0.0, 0.0, 100.0, 1.0};
 
 	// Ativa o uso da luz ambiente
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
 
 	// Define os parâmetros da luz de número 0
 	glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
-	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
-	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular);
+	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz);
 }
 
 // Função callback de redesenho da janela de visualização
@@ -59,15 +49,32 @@ void Desenha(void)
 	// Altera a cor do desenho para rosa
 	glColor3f(0.50f, 0.50f, 0.50f);
 
+	GLfloat ks_cabeca[4]={0.0,0.0,0.0,0.0};
+	GLfloat kd_cabeca[4]={1.0,1.0,1.0,0.0};
+	GLint ns_cabeca = 90;
+
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, kd_cabeca);
+	// Define a refletância do material
+	glMaterialfv(GL_FRONT,GL_SPECULAR, ks_cabeca);
+	// Define a concentração do brilho
+	glMateriali(GL_FRONT,GL_SHININESS, ns_cabeca);
 	//Desenha cabeça
 	glPushMatrix();
     glRotatef(rotX,1,0,0);
 	glRotatef(rotY,0,1,0);
-	glScalef(0.2f, 0.2f, 0.2f);
-	glTranslatef(0, 13, 0);
+	glScalef(0.8f, 0.8f, 0.8f);
+	glTranslatef(0, 5, 0);
 	DesenhaObjeto(cabeca);
     glPopMatrix();
 
+    GLfloat ks_corpo[4]={0.0,1.0,0.0,1.0};
+    GLfloat kd_corpo[4]={0.0,0.0,0.0,0.0};
+	GLint ns_corpo = 90;
+	// Define a refletância do material
+	glMaterialfv(GL_FRONT,GL_SPECULAR, ks_corpo);
+	glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE, kd_corpo);
+	// Define a concentração do brilho
+	glMateriali(GL_FRONT,GL_SHININESS, ns_corpo);
     //Desenha corpo
     glPushMatrix();
     glRotatef(rotX,1,0,0);
@@ -76,6 +83,14 @@ void Desenha(void)
 	DesenhaObjeto(corpo);
     glPopMatrix();
 
+    GLfloat ks_banco[4]={0.0,0.0,0.0,0.0};
+    GLfloat kd_banco[4]={0.0,0.0,0.0,0.0};
+	GLint ns_banco = 800;
+	// Define a refletância do material
+	glMaterialfv(GL_FRONT,GL_SPECULAR, ks_banco);
+	glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE, kd_banco);
+	// Define a concentração do brilho
+	glMateriali(GL_FRONT,GL_SHININESS, ns_banco);
     //Desenha banco
     glPushMatrix();
     glColor3f(0.91f, 0.51f, 0.23f);
@@ -86,6 +101,14 @@ void Desenha(void)
 	DesenhaObjeto(banco);
     glPopMatrix();
 
+    GLfloat ks_parede[4]={0.0,0.0,0.0,0.0};
+    GLfloat kd_parede[4]={0.0,0.0,0.0,0.0};
+	GLint ns_parede = 60;
+	// Define a refletância do material
+	glMaterialfv(GL_FRONT,GL_SPECULAR, ks_parede);
+	glMaterialfv(GL_FRONT,GL_AMBIENT_AND_DIFFUSE, kd_parede);
+	// Define a concentração do brilho
+	glMateriali(GL_FRONT,GL_SHININESS, ns_parede);
     //teto
     glPushMatrix();
     glColor3f(0, 0, 1);
@@ -152,11 +175,11 @@ void EspecificaParametrosVisualizacao(void)
 	glLoadIdentity();
 
 	// Especifica a projeção perspectiva(angulo,aspecto,dnear,dfar)
-	gluPerspective(angle,fAspect,0.01,1200);
+	gluPerspective(angle, fAspect, 0.01, 1200);
 
 	// Chama as funções que especificam os parâmetros da câmera e os parâmetros de iluminação
 	PosicionaObservador();
-	//DefineIluminacao();
+	DefineIluminacao();
 
 }
 
@@ -245,9 +268,9 @@ void GerenciaMovim(int x, int y)
 	else if(bot==GLUT_RIGHT_BUTTON){
 		// Calcula diferença
 		int deltaz = y_ini - y;
-		if((obsZ_ini + deltaz/SENS_OBS) <= 20 && (obsZ_ini + deltaz/SENS_OBS) >= 0)
+		if((obsZ_ini + deltaz/SENS_OBS) <= 20 && (obsZ_ini + deltaz/SENS_OBS) >= 10)
 		// E modifica distância do observador
-		obsZ = obsZ_ini + deltaz/SENS_OBS;
+            obsZ = obsZ_ini + deltaz/SENS_OBS;
 	}
 	// Botão do meio
 	PosicionaObservador();
@@ -255,12 +278,10 @@ void GerenciaMovim(int x, int y)
 }
 
 // Função responsável por inicializar parâmetros e variáveis
-void Inicializa (void)
-{
+void inicializa(void) {
 
 	// Define a cor de fundo da janela de visualização como branca
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-
 	// Habilita a definição da cor do material a partir da cor corrente
 	glEnable(GL_COLOR_MATERIAL);
 	//Habilita o uso de iluminação
@@ -273,12 +294,10 @@ void Inicializa (void)
 	// Habilita o modelo de tonalização de Gouraud
 	glShadeModel(GL_SMOOTH);
 
-	// Inicializa a variável que especifica o ângulo da projeção
-	// perspectiva
+	// Inicializa a variável que especifica o ângulo da projeção perspectiva
 	angle=55;
 
-	// Inicializa as variáveis usadas para alterar a posição do
-	// observador virtual
+	// Inicializa as variáveis usadas para alterar a posição do observador virtual
 	obsX = obsY = 0;
 	obsZ = 20;
 
@@ -355,7 +374,7 @@ int main(int argc, char *argv[])
 	glutMotionFunc(GerenciaMovim);
 
 	// Chama a função responsável por fazer as inicializações
-	Inicializa();
+	inicializa();
 
 	// Inicia o processamento e aguarda interações do usuário
 	glutMainLoop();
