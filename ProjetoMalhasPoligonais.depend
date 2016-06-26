@@ -80,9 +80,11 @@
 	<GL/glut.h>
 	<jpeglib.h>
 
-1466955543 source:/home/mairieli/Workspace/cena3D-cg/05-03-MalhaOBJ.cpp
+1466959083 source:/home/mairieli/Workspace/cena3D-cg/05-03-MalhaOBJ.cpp
 	"bibutil.h"
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
+
+973874992 /home/mairieli/Workspace/cena3D-cg/tgaload.h
 

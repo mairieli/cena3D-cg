@@ -49,7 +49,9 @@ void Desenha(void)
 	// Limpa a janela de visualização com a cor
 	// de fundo definida previamente
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	// Define que a matriz é a de modelo
 	glMatrixMode(GL_MODELVIEW);
+
 
 	// Altera a cor do desenho para rosa
 	glColor3f(0.50f, 0.50f, 0.50f);
@@ -75,7 +77,7 @@ void Desenha(void)
     glPushMatrix();
     glColor3f(0.91f, 0.51f, 0.23f);
     glRotatef(rotX,1,0,0);
-	glRotatef(rotY,0,1,0);
+	glRotatef(0,0,1,0);
 	glScalef(0.8f, 0.8f,0.8f);
 	glTranslatef(-0.2f, -7.8f, -6.5f);
 	DesenhaObjeto(banco);
@@ -123,6 +125,7 @@ void Desenha(void)
     glScalef(20, 0.1f, 20);
     glutSolidCube(1.0f);
     glPopMatrix();
+
 	// Executa os comandos OpenGL
 	glutSwapBuffers();
 }
@@ -140,9 +143,9 @@ void PosicionaObservador(void){
 void EspecificaParametrosVisualizacao(void)
 {
 
-	// Especifica sistema de coordenadas de projeção
+	// Define que a matriz é a matriz de projeçao
 	glMatrixMode(GL_PROJECTION);
-	// Inicializa sistema de coordenadas de projeção
+	// Carrega a matriz de identidade
 	glLoadIdentity();
 
 	// Especifica a projeção perspectiva(angulo,aspecto,dnear,dfar)
@@ -195,7 +198,7 @@ void TeclasEspeciais (int tecla, int x, int y)
 {
 	switch (tecla)
 	{
-		case GLUT_KEY_HOME:	if(angle>=10)  angle -=5;
+		case GLUT_KEY_HOME:	if(angle>=50)  angle -=5;
 							break;
 		case GLUT_KEY_END:	if(angle<=150) angle +=5;
 							break;
@@ -236,7 +239,7 @@ void GerenciaMovim(int x, int y)
 		int deltay = y_ini - y;
 		// E modifica ângulos
 		rotY = rotY_ini - deltax/SENS_ROT;
-		rotX = rotX_ini - deltay/SENS_ROT;
+		//rotX = rotX_ini - deltay/SENS_ROT;
 	}
 	// Botão direito (zoom-in e zoom-out)
 	else if(bot==GLUT_RIGHT_BUTTON){
@@ -249,10 +252,10 @@ void GerenciaMovim(int x, int y)
 	else if(bot==GLUT_MIDDLE_BUTTON)
 	{
 		// Calcula diferenças
-		int deltax = x_ini - x;
+		//int deltax = x_ini - x;
 		int deltay = y_ini - y;
 		// E modifica posições
-		obsX = obsX_ini + deltax/SENS_TRANSL;
+		//obsX = obsX_ini + deltax/SENS_TRANSL;
 		obsY = obsY_ini - deltay/SENS_TRANSL;
 	}
 	PosicionaObservador();
@@ -273,7 +276,7 @@ void Inicializa (void)
 	glEnable(GL_LIGHTING);
 	// Habilita a luz de número 0
 	glEnable(GL_LIGHT0);
-	// Habilita o depth-buffering
+	// Remoção de superfície oculta
 	glEnable(GL_DEPTH_TEST);
 
 	// Habilita o modelo de tonalização de Gouraud
