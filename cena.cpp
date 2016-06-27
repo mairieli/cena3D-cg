@@ -5,12 +5,12 @@
 
 #define SENS_ROT	5.0
 #define SENS_OBS	15.0
-#define SENS_TRANSL	20.0
 
 // Variáveis para controles de navegação
 GLfloat angle, fAspect;
-GLfloat rotX, rotY, rotX_ini, rotY_ini;
+GLfloat rotX, rotY, rotX_ini, rotY_ini, transZ_banco=-6.5f, transX_banco=-0.2f, transY_corpo;
 GLfloat obsX, obsY, obsZ, obsX_ini, obsY_ini, obsZ_ini;
+GLboolean animacao = GL_FALSE;
 int x_ini,y_ini,bot;
 
 // Apontador para objetos
@@ -77,6 +77,7 @@ void desenha(void) {
     glRotatef(rotX,1,0,0);
 	glRotatef(rotY,0,1,0);
 	glScalef(1.3f, 1.3f, 1.3f);
+	glTranslatef(0, transY_corpo, 0);
 	DesenhaObjeto(corpo);
     glPopMatrix();
 
@@ -94,7 +95,7 @@ void desenha(void) {
     glRotatef(0,1,0,0);
 	glRotatef(0,0,1,0);
 	glScalef(0.8f, 0.8f,0.8f);
-	glTranslatef(-0.2f, -7.8f, -6.5f);
+	glTranslatef(transX_banco, -7.8f, transZ_banco);
 	DesenhaObjeto(banco);
     glPopMatrix();
 
@@ -203,6 +204,17 @@ void teclas(unsigned char tecla, int x, int y) {
 		LiberaObjeto(corpo);
 		LiberaObjeto(banco);
 		exit(0);
+	} else if (tecla == 'w'){
+        animacao = GL_TRUE;
+	} else if (tecla == 'a'){
+        animacao = GL_FALSE;
+	} else if (tecla == 's'){
+        animacao =  GL_FALSE;
+        transZ_banco=-6.5f;
+        transX_banco=-0.2f;
+        transY_corpo = 0;
+        rotX=0;
+        rotY=0;
 	}
 	glutPostRedisplay();
 }
@@ -305,40 +317,50 @@ void inicializa(void) {
 	CalculaNormaisPorFace(banco);
 }
 
+void cria_animacao(){
+    if(animacao){
+            if(transX_banco < 5){
+                transX_banco += 1;
+                transZ_banco += 1;
+            } else {
+                if(transY_corpo > -3){
+                    transY_corpo -= 0.5;
+                } else {
+                    rotY += 1;
+                }
+            }
+
+        glutPostRedisplay();
+    }
+    glutPostRedisplay();
+}
+
+
 // Programa Principal
 int main(int argc, char *argv[]) {
     glutInit(&argc, argv);
 	// Define do modo de operação da GLUT
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-
 	// Especifica a posição inicial da janela GLUT
-	glutInitWindowPosition(5,5);
-
+	glutInitWindowPosition(100, 100);
 	// Especifica o tamanho inicial em pixels da janela GLUT
-	glutInitWindowSize(1200,600);
-
+	glutInitWindowSize(800,600);
 	// Cria a janela passando como argumento o título da mesma
 	glutCreateWindow("Quarto do Terror");
-
 	// Registra a função callback de redesenho da janela de visualização
 	glutDisplayFunc(desenha);
-
 	// Registra a função callback de redimensionamento da janela de visualização
 	glutReshapeFunc(alteraTamanhoJanela);
-
 	// Registra a função callback para tratamento das teclas normais
 	glutKeyboardFunc(teclas);
-
 	// Registra a função callback para eventos de botões do mouse
 	glutMouseFunc(gerenciaMouse);
-
 	// Registra a função callback para eventos de movimento do mouse
 	glutMotionFunc(gerenciaMovimento);
-
+	glutIdleFunc(cria_animacao);
 	// Chama a função responsável por fazer as inicializações
 	inicializa();
-
-	// Inicia o processamento e aguarda interações do usuário
+    // Inicia o processamento e aguarda interações do usuário
 	glutMainLoop();
 
 	return 0;
