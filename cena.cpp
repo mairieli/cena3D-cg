@@ -20,19 +20,36 @@ OBJ* banco;
 
 // Função responsável pela especificação dos parâmetros de iluminação
 void defineIluminacao(void) {
-	GLfloat luzAmbiente[4]={0.1,0.1,0.1,1.0};
-	GLfloat luzDifusa[4]={1.0,1.0,1.0,1.0};	   	// "cor"
-	GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};	// "brilho"
-	GLfloat posicaoLuz[4]={0.0, 0.0, 100.0, 1.0};
+	GLfloat luzAmbiente[4]={0.1,0.1,0.1,1.0};	// "brilho"
+	float direction[4] = {0.0, -1.0, 0.0, 1.0};
+	GLfloat posicaoLuzInfinita[4]={0.0, 0.0, 100.0, 0.0};
+	GLfloat posicaoLuz[4]={0.0, 8.0, 5.0, 1.0};
+	float white[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+    float black[4] = {0.0f, 0.0f, 0.0f, 1.0f};
+    float red[4] = {1.0f, 0.0f, 0.0f, 1.0f};
+    float blue[4] = {0.0f, 0.0f, 1.0f, 1.0f};
+
 
 	// Ativa o uso da luz ambiente
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
+	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
 
 	// Define os parâmetros da luz de número 0
-	glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular);
-	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, black);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, blue);
+	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuzInfinita);
+
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, red);
+	glLightfv(GL_LIGHT1, GL_SPECULAR, red);
+	glLightfv(GL_LIGHT1, GL_POSITION, posicaoLuz);
+	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, direction); //direcao da luz: para baixo
+    glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 40.0f);
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHT1);
+
 }
 
 // Função callback de redesenho da janela de visualização
@@ -242,14 +259,6 @@ void gerenciaMovimento(int x, int y) {
 		// E modifica ângulo y
 		rotY = rotY_ini - deltax/SENS_ROT;
 	}
-	// Botão direito (zoom-in e zoom-out)
-	else if(bot==GLUT_RIGHT_BUTTON){
-		// Calcula diferença
-		int deltaz = y_ini - y;
-		if((obsZ_ini + deltaz/SENS_OBS) <= 20 && (obsZ_ini + deltaz/SENS_OBS) >= 10)
-		// E modifica distância do observador
-            obsZ = obsZ_ini + deltaz/SENS_OBS;
-	}
 	// Botão do meio
 	posicionaObservador();
 	glutPostRedisplay();
@@ -262,10 +271,6 @@ void inicializa(void) {
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	// Habilita a definição da cor do material a partir da cor corrente
 	glEnable(GL_COLOR_MATERIAL);
-	//Habilita o uso de iluminação
-	glEnable(GL_LIGHTING);
-	// Habilita a luz de número 0
-	glEnable(GL_LIGHT0);
 	// Remoção de superfície oculta
 	glEnable(GL_DEPTH_TEST);
 
@@ -326,7 +331,7 @@ void cria_animacao(){
                 if(transY_corpo > -3){
                     transY_corpo -= 0.5;
                 } else {
-                    rotY += 1;
+                    rotY += 15;
                 }
             }
 
